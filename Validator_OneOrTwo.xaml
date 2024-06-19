@@ -1,0 +1,15 @@
+﻿<Window x:Class="Validator.Validator_OneOrTwo"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Validator"
+        mc:Ignorable="d"
+        Title="Input Int" Height="200" Width="250">
+    <Grid>
+        <Label x:Name="LB_MSG3" Content="ERROR_MSG3" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,45" />
+        <Button x:Name="BT_MSG1" Content="ERROR_MSG1" HorizontalAlignment="Center" VerticalAlignment="Center" Height="27" Width="100" Margin="0,45,115,15" Click="MSG1_CLicked"/>
+        <Button x:Name="BT_MSG2" Content="ERROR_MSG2" HorizontalAlignment="Center" VerticalAlignment="Center" Height="27" Width="100" Margin="115,45,0,15" Click="MSG2_CLicked"/>
+        <Button x:Name="BT_Cancel" Content="Cancel" HorizontalAlignment="Center" VerticalAlignment="Center" Height="27" Width="100" Margin="0,100,0,0" Click="Cancel_CLicked"/>
+    </Grid>
+</Window>
