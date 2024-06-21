@@ -1,5 +1,5 @@
-﻿#define WPFApp
-//#define ConsoleApp
+﻿//#define WPFApp
+#define ConsoleApp
 
 using System;
 using System.Collections.Generic;
@@ -97,6 +97,11 @@ namespace Validator
             int outputInt = -1;
             bool outputBool = true;
 
+            bool test1 = Max != 0;
+            bool test2 = int.Parse(input) <= Max;
+            bool test3 = (Max != 0 && int.Parse(input) <= Max);
+            bool test4 = !(Max != 0 && int.Parse(input) <= Max);
+
             if (input == null || !int.TryParse(input, out outputInt) || outputInt < Min || !(Max != 0 && outputInt <= Max))
             {
                 outputBool = false;
@@ -108,19 +113,20 @@ namespace Validator
         public static int GetInt(string message, int Max, int Min = 0)
         {
             string? input = null;
-            int output = -1;
-            Tuple<bool, int> t = new Tuple<bool, int>(false, -1);
+            Tuple<bool, int> output = new Tuple<bool, int>(false, -1);
 
-            while (t.Item1)
+            string localMessage = Max == 0 ? $"{message} (int)" : $"{message} ({Max}, int)";
+
+            while (!output.Item1)
             {
                 Console.Clear();
-                Console.Write($"{message} (int): ");
+                Console.Write($"{localMessage}: ");
                 input = Console.ReadLine();
 
-                t = Validator.CheckInt(input);
+                output = Validator.CheckInt(input, Min: Min, Max: Max);
             }
 
-            return output;
+            return output.Item2;
         }
 #elif WPFApp
         public static int GetInt(string message, int Min=0, int Max = 0)
