@@ -102,7 +102,7 @@ namespace Validator
             bool test3 = (Max != 0 && int.Parse(input) <= Max);
             bool test4 = !(Max != 0 && int.Parse(input) <= Max);
 
-            if (input == null || !int.TryParse(input, out outputInt) || outputInt < Min || !(Max != 0 && outputInt <= Max))
+            if (input == null || !int.TryParse(input, out outputInt) || outputInt < Min || (Max != 0 && outputInt <= Max))
             {
                 outputBool = false;
             }
