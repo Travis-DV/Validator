@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -97,12 +98,8 @@ namespace Validator
             int outputInt = -1;
             bool outputBool = true;
 
-            bool test1 = Max != 0;
-            bool test2 = int.Parse(input) <= Max;
-            bool test3 = (Max != 0 && int.Parse(input) <= Max);
-            bool test4 = !(Max != 0 && int.Parse(input) <= Max);
 
-            if (input == null || !int.TryParse(input, out outputInt) || outputInt < Min || (Max != 0 && outputInt <= Max))
+            if (input == null || !int.TryParse(input, out outputInt) || outputInt < Min || !(Max != 0 && outputInt <= Max))
             {
                 outputBool = false;
             }
@@ -110,17 +107,17 @@ namespace Validator
         }
 
 #if ConsoleApp
-        public static int GetInt(string message, int Max, int Min = 0)
+        public static int GetInt(string message, int Min = 0, int Max = 0)
         {
             string? input = null;
             Tuple<bool, int> output = new Tuple<bool, int>(false, -1);
 
-            string localMessage = Max == 0 ? $"{message} (int)" : $"{message} ({Max}, int)";
+            string localMessage = Max == 0 ? $"{message} (int): " : $"{message} ({Max}, int): ";
 
             while (!output.Item1)
             {
                 Console.Clear();
-                Console.Write($"{localMessage}: ");
+                Console.Write(localMessage);
                 input = Console.ReadLine();
 
                 output = Validator.CheckInt(input, Min: Min, Max: Max);
@@ -251,6 +248,60 @@ namespace Validator
             }
 
             return input;
+        }
+
+        #endregion
+
+        #region Array Stuff 
+
+        public static Tuple<bool, int[]> CheckIntArray(string? input, int MinLength = 0, int MaxLength = 0)
+        {
+            List<int> outputInt = new List<int>();
+
+            if (input == null)
+            {
+                return Tuple.Create(false, new int[1]);
+            }
+
+            string[] splitInput = input.Split(",");
+
+            if (splitInput.Length < MinLength || (MaxLength > 0 && MaxLength > MinLength && splitInput.Length < MaxLength))
+            {
+                return Tuple.Create(false, new int[1]);
+            }
+
+            foreach (string s in input.Split(","))
+            {
+                Tuple<bool, int> checkInt = Validator.CheckInt(s);
+
+                if (!checkInt.Item1)
+                {
+                    return Tuple.Create(false, new int[1]);
+                }
+
+                outputInt.Add(checkInt.Item2);
+            }
+
+            return Tuple.Create(true, outputInt.ToArray());
+        }
+
+        public static int[] GetIntArray(string message, int MinLength = 0, int MaxLength = 0)
+        {
+            string? input = null;
+            Tuple<bool, int[]> output = new Tuple<bool, int[]>(false, new int[1]);
+
+            string localMessage = MaxLength == 0 ? $"{message} (#, #): " : $"{message} ({MaxLength}, [#, #]): ";
+
+            while (input == null && !output.Item1)
+            {
+                Console.Clear();
+                Console.Write(localMessage);
+                input = Console.ReadLine();
+
+                output = Validator.CheckIntArray(input, MinLength: MinLength, MaxLength: MaxLength);
+            }
+
+            return output.Item2;
         }
 
         #endregion
