@@ -67,7 +67,7 @@ namespace Validator
         public static bool CheckString(string? input)
         {
 
-            if (CheckString == null || !input.Any(Char.IsLetterOrDigit))
+            if (input == null || !input.Any(Char.IsLetterOrDigit))
             {
                 return false;
             }
